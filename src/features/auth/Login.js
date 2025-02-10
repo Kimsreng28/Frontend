@@ -18,7 +18,9 @@ const Login = () => {
   const [login, { isLoading }] = useLoginMutation();
 
   useEffect(() => {
-    userRef.current.focus();
+    if (userRef.current) {
+      userRef.current.focus();
+    }
   }, []);
 
   useEffect(() => {
@@ -43,7 +45,9 @@ const Login = () => {
       } else {
         setErrMsg(err.data?.message);
       }
-      errRef.current.focus();
+      if (errRef.current) {
+        errRef.current.focus();
+      }
     }
   };
 
@@ -60,7 +64,11 @@ const Login = () => {
         <h1>Employee Login</h1>
       </header>
       <main className="login">
-        <p ref={errRef} className={errClass} aria-live="assertive">
+        <p
+          ref={(el) => (errRef.current = el)}
+          className={errClass}
+          aria-live="assertive"
+        >
           {errMsg}
         </p>
 
@@ -70,7 +78,7 @@ const Login = () => {
             className="form__input"
             type="text"
             id="username"
-            ref={userRef}
+            ref={(el) => (userRef.current = el)}
             value={username}
             onChange={handleUserInput}
             autoComplete="off"
